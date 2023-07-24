@@ -12,11 +12,10 @@ A parser that converts the Aria2 input file into the Curl's input file.<br/>
 - Supports multi-targets in one file.
 
 ## How to use
-`aria2curl [-o <output>] <input>` and `curl -K <output>`<br/>
-while the default output is `<input>.cfg`.
+`aria2curl [-o <output>] <input>` and `curl -K <output>`, while the default output is `<input>.cfg`.
 
 ## Further development plans
 - Support more options (currently, we support `referer`, `user-agent`, `out` and those have the same name between Aria2 and Curl).
-- Directly do the actuall download (using `libcurl`)?
+- Directly do the actual download (using `libcurl`)?
 - Based on (ref2), support multi-thread or similar features?
 ### PR Welcomed!
