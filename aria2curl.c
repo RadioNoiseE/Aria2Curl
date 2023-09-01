@@ -1,4 +1,4 @@
-/* Copyright 2023, Jing Huang. (Protected by MIT license) */
+/* Copyright 2023, Jing Huang. (Under MIT license) */
 
 # include <stdio.h>
 # include <string.h>
@@ -7,8 +7,10 @@
 # define MAXTOK 102400
 # define MAXTL 102410
 # define MAXKOPT 1024
-# define MAXFLN 19
-# define LITRADT "# Parsed (generated) by Aria2 to Curl converter.\n# Copyright, 2023 Jing Huang.\n# https://github.com/RadioNoiseE/Aria2Curl (MIT license).\n"
+# define MAXFLN 42
+# define LITRADT "# Parsed (generated) by aria2curl.\n\
+                  # Copyright, 2023 Jing Huang.\n\
+                  # https://github.com/RadioNoiseE/Aria2Curl (MIT license).\n"
 
 fpos_t current_pos;
 int terminate_flag = 0;
@@ -93,11 +95,13 @@ int classify_line(void)
   return -1;
 }
 
-void parse_url(void)
+void parse_url(int pb_flag)
 {
   strcpy(psd_token_list, "url=\"");
   strncat(psd_token_list, line.token_list, 1018);
   strcat(psd_token_list, "\"\n");
+  if (pb_flag)
+    strcat(psd_token_list, "progress-bar\n");
   return;
 }
 
@@ -152,6 +156,7 @@ int write_line(FILE * output)
 int main(int argc, char * argv[])
 {
   int output_default = 1;
+  int progress_bar = 0;
   char option, output_fname[MAXFLN];
   FILE *ifp, *ofp;
 
@@ -159,10 +164,13 @@ int main(int argc, char * argv[])
     option = *++argv[0];
 
     switch (option) {
+      case '#':
+        progress_bar = 1;
+        break;
       case 'o':
         output_default = 0;
         break;
-       default:
+      default:
         printf("__FILE__: illegal option %c\n", option);
         argc = 0;
         break;
@@ -170,8 +178,8 @@ int main(int argc, char * argv[])
   }
 
   if (argc != (output_default ? 1 : 2)) {
-    printf("Aria2Curl: Feed aria2c input file to curl.\n");
-    printf("Usage: aria2curl [-o output] input\n");
+    printf("aria2curl: feeds aria2c input file to curl\n");
+    printf("usage    : aria2curl [-o output|-#] input\n");
     return -1;
   } else {
     if (output_default)
@@ -190,7 +198,7 @@ int main(int argc, char * argv[])
       classify_line();
 
       if (line.type == url)
-        parse_url();
+        parse_url(progress_bar);
       else if (line.type == key_opt)
         parse_kopt();
       else if (line.type == comment)
