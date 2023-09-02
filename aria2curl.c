@@ -100,6 +100,7 @@ void parse_url(int pb_flag)
   strcpy(psd_token_list, "url=\"");
   strncat(psd_token_list, line.token_list, 1018);
   strcat(psd_token_list, "\"\n");
+
   if (pb_flag)
     strcat(psd_token_list, "progress-bar\n");
   return;
