@@ -69,7 +69,7 @@ int classify_line(void)
   int trial, temp;
 
   for (trial = 0; line.token_list[trial] == ' ' || line.token_list[trial] == '\t'; trial++);
-  
+
   if (line.token_list[trial] == '#') {
     line.type = comment;
     return 0;
@@ -77,7 +77,7 @@ int classify_line(void)
 
   while (trial >= 0) {
     temp = trial;
-    
+
     if (trial == (MAXKOPT - 2)) {
       printf("Unknown magic, this line doesn't fall into any of the categories and hence will be ignored [WRN]\n");
       line.type = unknown;
@@ -129,7 +129,7 @@ void parse_kopt(void)
   for (offset_aux = 0; line.token_list[offset] != '\0'; offset++, offset_aux++)
     temp[offset_aux] = line.token_list[offset];
   temp[offset_aux] = '\0';
-  
+
   strcat(psd_token_list, temp);
   strcat(psd_token_list, "\"\n");
   return;
@@ -193,7 +193,7 @@ int main(int argc, char * argv[])
 
     file_init(ifp);
     fputs(LITRADT, ofp);
-    
+
     while (terminate_flag == 0) {
       read_line(ifp);
       classify_line();
@@ -211,7 +211,7 @@ int main(int argc, char * argv[])
 
       write_line(ofp);
     }
-    
+
     if (fclose(ofp) != 0)
       printf("Error in closing file %s [ERR]\n", output_fname);
 
